@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
 from django.template.defaultfilters import slugify
-
+from secrets import token_hex
 
 class MemberManager(BaseUserManager):
     def create_user(
-        self, first_name, last_name, email, password, **other_fields
+        self, first_name, last_name, email, password, mobile_number, address, country, gender, **other_fields
     ):
         other_fields.setdefault("is_staff", False)
         other_fields.setdefault("is_superuser", False)
@@ -18,6 +18,10 @@ class MemberManager(BaseUserManager):
             last_name=last_name,
             username=self.normalize_email(email),
             email=self.normalize_email(email),
+            mobile_number=mobile_number,
+            address=address,
+            country=country,
+            gender=gender,
             **other_fields
         )
         user.set_password(password)
@@ -25,7 +29,7 @@ class MemberManager(BaseUserManager):
 
         return user
     
-    def create_superuser(self, first_name, last_name, email, password, **other_fields):
+    def create_superuser(self, first_name, last_name, email, password, mobile_number, address, country, gender, **other_fields):
         other_fields.setdefault("is_staff", True)
         other_fields.setdefault("is_superuser", True)
         other_fields.setdefault("is_active", True)
@@ -35,7 +39,7 @@ class MemberManager(BaseUserManager):
         if other_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must be assigned to is_superuser=True")
 
-        return self.create_user(first_name, last_name, email, password, **other_fields)
+        return self.create_user(first_name, last_name, email, password, mobile_number, address, country, gender, **other_fields)
 
 
 class Member(AbstractUser, PermissionsMixin):
@@ -52,7 +56,7 @@ class Member(AbstractUser, PermissionsMixin):
     objects = MemberManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ["first_name", "last_name", "mobile_number", "address", "country", "gender"]
 
     def __str__(self):
         return f"{self.id}-{self.email}"
@@ -64,7 +68,7 @@ class YachtType(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"YachtType: {self.name}"
+        return self.name
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -72,13 +76,11 @@ class YachtType(models.Model):
 
 
 def get_image_filename(instance, filename):
-    title = instance.post.title
-    slug = slugify(title)
-    return "yatch_images/%s-%s" % (slug, filename)
+    return "images/%s-%s" % (token_hex(10), filename)
 
 class Yacht(models.Model):
     name = models.CharField(max_length=80)
-    rate = models.DecimalField(decimal_places=2, max_digits=4)
+    rate = models.IntegerField()
     capacity = models.IntegerField()
     yacht_type = models.ForeignKey(YachtType, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=get_image_filename, null=True, blank=True)
@@ -111,6 +113,10 @@ class Event(models.Model):
 
     def __str__(self):
         return f"Event - {self.name}"
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Event, self).save(*args, **kwargs)
 
 class EventBooking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
@@ -135,6 +141,10 @@ class Training(models.Model):
 
     def __str__(self):
         return f"Training - {self.name}"
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Training, self).save(*args, **kwargs)
 
 
 class TrainingBooking(models.Model):
@@ -153,13 +163,20 @@ class Package(models.Model):
     name = models.CharField(max_length=80)
     type = models.CharField(max_length=80)
     slug = models.SlugField()
-    price = models.DecimalField(decimal_places=2, max_digits=6)
+    price = models.IntegerField()
     days = models.IntegerField()
     description = models.TextField()
-    image = models.ImageField(upload_to=get_image_filename)
+    image = models.ImageField(upload_to=get_image_filename, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Package: {self.name}"
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Package, self).save(*args, **kwargs)
 
 class PackageBooking(models.Model):
     package = models.ForeignKey(Package, on_delete=models.CASCADE)

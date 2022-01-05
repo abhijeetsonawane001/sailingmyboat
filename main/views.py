@@ -44,6 +44,10 @@ def create_account(request):
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            mobile_number = form.cleaned_data['mobile_number']
+            address = form.cleaned_data['address']
+            country = form.cleaned_data['country']
+            gender = form.cleaned_data['gender']
 
             # Check Member Exists or not
             member = Member.objects.filter(email=email).first()
@@ -51,7 +55,7 @@ def create_account(request):
                 messages.error(request, "Email already exists!")
                 return redirect('main_create_account')
             
-            member = Member.objects.create_user(first_name=first_name, last_name=last_name, email=email, password=password)
+            member = Member.objects.create_user(first_name=first_name, last_name=last_name, email=email, password=password, mobile_number=mobile_number, address=address, country=country, gender=gender)
 
             if member:
                 login(request, member)

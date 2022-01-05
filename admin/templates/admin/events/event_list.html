@@ -1,0 +1,91 @@
+{% extends 'admin/base.html' %} {% block action %}
+<a
+  href="{% url 'admin_event_add' %}"
+  class="
+    inline-flex
+    justify-center
+    py-2
+    px-4
+    border border-transparent
+    shadow-sm
+    text-sm
+    font-mediumIi
+    rounded-md
+    text-white
+    bg-indigo-800
+    hover:bg-indigo-700
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+  "
+>
+  Add Event
+</a>
+{% endblock %} 
+{% block content %} 
+{% if events.count < 1 %}
+<p>No Event found.</p>
+{% else %}
+  <div>
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Type
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Days
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Description
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th scope="col" class="relative px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                {% for event in events %}
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {{ event.name }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ event.type }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ event.days }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ event.description }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {% if event.is_active %}
+                    Active
+                    {% else %}
+                    Inactive
+                    {% endif %}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-6">
+                    <a href="{% url 'admin_event_edit' event.id %}" class="text-indigo-700 hover:text-indigo-900">Edit</a>
+                    <a href="{% url 'admin_event_delete' event.id %}" class="text-indigo-700 hover:text-indigo-900">Delete</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
