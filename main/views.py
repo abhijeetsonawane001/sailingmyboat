@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm, CreateAccountForm
+from .forms import EventBookingForm, LoginForm, CreateAccountForm, TrainingBookingForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Member, MemberManager
+from .models import Event, EventBooking, Member, Training, TrainingBooking, Yacht
+from datetime import timedelta
 
 
 def index(request):
-    return render(request, "index.html", {'title': 'Home'})
+    yachts = Yacht.objects.all()
+
+    context = {'title': 'Book Yachts', 'yachts': yachts}
+    return render(request, "index.html", context)
 
 def login_view(request):
     form = LoginForm()
@@ -62,3 +67,87 @@ def create_account(request):
                 return redirect('main_index')
             
     return render(request, "create_account.html", {'form': form, 'title': 'Create new Account'})
+
+
+# Yacht Detail
+def yacht_detail(request, pk):
+    yacht = Yacht.objects.filter(id=pk).first()
+
+    context = {'title': f"{yacht.name} Details", 'yacht': yacht}
+    return render(request, 'yacht_detail.html', context)
+
+
+# Events
+def events_list(request):
+    events = Event.objects.filter(is_active=True).all()
+
+    context = {'title': "Events", 'events': events}
+    return render(request, 'events/index.html', context)
+
+
+def events_detail(request, pk):
+    event = Event.objects.filter(id=pk).first()
+
+    context = {'title': 'Event Information', 'event': event}
+
+    return render(request, 'events/detail.html', context)
+    
+
+@login_required()
+def event_booking(request, event_id):
+    event = Event.objects.filter(id=event_id).first()
+    if not event:
+        return redirect('main_event_list')
+    form = EventBookingForm()
+
+    if request.method == "POST":
+        form = EventBookingForm(request.POST)
+        if form.is_valid():
+            start_date = form.cleaned_data['event_date']
+            end_date = start_date+timedelta(days=event.days)
+
+            event_booking = EventBooking(event=event, member=request.user, start_date=start_date, end_date=end_date)
+
+            event_booking.save()
+
+            # Show successful page and generate PDF
+            return redirect('main_event_list')
+    return render(request, 'events/register.html', context={'title': 'Event Registration', 'form':form})
+
+
+# Trainings
+def trainings_list(request):
+    trainings = Training.objects.filter(is_active=True).all()
+
+    context = {'title': "Trainings", 'trainings': trainings}
+    return render(request, 'trainings/index.html', context)
+
+
+def trainings_detail(request, pk):
+    training = Training.objects.filter(id=pk).first()
+
+    context = {'title': 'Training Information', 'training': training}
+
+    return render(request, 'trainings/detail.html', context)
+    
+
+@login_required()
+def training_booking(request, training_id):
+    training = Training.objects.filter(id=training_id).first()
+    if not training:
+        return redirect('main_training_list')
+    form = TrainingBookingForm()
+
+    if request.method == "POST":
+        form = TrainingBookingForm(request.POST)
+        if form.is_valid():
+            start_date = form.cleaned_data['training_date']
+            end_date = start_date+timedelta(days=training.days)
+
+            training_booking = TrainingBooking(training=training, member=request.user, start_date=start_date, end_date=end_date)
+
+            training_booking.save()
+
+            # Show successful page and generate PDF
+            return redirect('main_training_list')
+    return render(request, 'trainings/register.html', context={'title': 'Training Registration', 'form':form})

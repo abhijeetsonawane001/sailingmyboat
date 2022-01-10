@@ -2,9 +2,25 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.template.defaultfilters import slugify
-from main.models import Employee, Event, Package, Training, Yacht, YachtType
+from main.models import (
+    Employee,
+    Event,
+    EventBooking,
+    Package,
+    Training,
+    TrainingBooking,
+    Yacht,
+    YachtType,
+)
 
-from .forms import EventForm, TrainingForm, YachtTypeForm, YachtForm, EmployeeForm, PackageForm
+from .forms import (
+    EventForm,
+    TrainingForm,
+    YachtTypeForm,
+    YachtForm,
+    EmployeeForm,
+    PackageForm,
+)
 from .helper import superuser_only
 
 
@@ -178,6 +194,7 @@ def employee_edit(request, email):
     context = {"form": form, "title": "Edit Employee"}
     return render(request, "admin/employees/edit.html", context)
 
+
 @login_required()
 @superuser_only
 def employee_delete(request, email):
@@ -192,8 +209,11 @@ def employee_delete(request, email):
 def package_list(request):
     packages = Package.objects.all()
     return render(
-        request, "admin/packages/package_list.html", {"title": "Packages", "packages": packages}
+        request,
+        "admin/packages/package_list.html",
+        {"title": "Packages", "packages": packages},
     )
+
 
 @login_required()
 @superuser_only
@@ -208,7 +228,9 @@ def package_add(request):
             messages.error(request, "Error while adding Package!")
             return redirect("admin_package_add")
     return render(
-        request, "admin/packages/package_add.html", {"title": "Add Package", "form": form}
+        request,
+        "admin/packages/package_add.html",
+        {"title": "Add Package", "form": form},
     )
 
 
@@ -250,6 +272,7 @@ def event_list(request):
     return render(
         request, "admin/events/event_list.html", {"title": "Events", "events": events}
     )
+
 
 @login_required()
 @superuser_only
@@ -298,14 +321,26 @@ def event_delete(request, pk):
     return redirect("admin_event_list")
 
 
+@login_required()
+@superuser_only
+def event_booking(request):
+    event_bookings = EventBooking.objects.all()
+    context = {"title": "Event Registrations", "bookings": event_bookings}
+    return render(request, "admin/events/bookings_list.html", context)
+
+
+
 # Trainings
 @login_required()
 @superuser_only
 def training_list(request):
     trainings = Training.objects.all()
     return render(
-        request, "admin/trainings/training_list.html", {"title": "Trainings", "trainings": trainings}
+        request,
+        "admin/trainings/training_list.html",
+        {"title": "Trainings", "trainings": trainings},
     )
+
 
 @login_required()
 @superuser_only
@@ -320,7 +355,9 @@ def training_add(request):
             messages.error(request, "Error while adding Training!")
             return redirect("admin_training_add")
     return render(
-        request, "admin/trainings/training_add.html", {"title": "Add Training", "form": form}
+        request,
+        "admin/trainings/training_add.html",
+        {"title": "Add Training", "form": form},
     )
 
 
@@ -352,3 +389,10 @@ def training_delete(request, pk):
     training = Training.objects.filter(id=pk).delete()
 
     return redirect("admin_training_list")
+
+@login_required()
+@superuser_only
+def training_booking(request):
+    training_bookings = TrainingBooking.objects.all()
+    context = {"title": "Training Registrations", "bookings": training_bookings}
+    return render(request, "admin/trainings/bookings_list.html", context)

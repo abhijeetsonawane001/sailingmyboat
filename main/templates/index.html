@@ -1,7 +1,226 @@
 {% extends "base.html" %}
 
-
-{% block content %}
-    <h1>{{ request.user.email }}</h1>
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<style>
+    .flickity-viewport {
+        height: 500px !important;
+    }
+</style>
 {% endblock %}
 
+{% block extra_js %}
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+<script>
+    function carousel() {
+        return {
+            active: 0,
+            init() {
+                var flkty = new Flickity(this.$refs.carousel, {
+                    wrapAround: true
+                });
+                flkty.on('change', i => this.active = i);
+            }
+        }
+    }
+
+    function carouselFilter() {
+        return {
+            active: 0,
+            changeActive(i) {
+                this.active = i;
+
+                this.$nextTick(() => {
+                    let flkty = Flickity.data(this.$el.querySelectorAll('.carousel')[i]);
+                    flkty.resize();
+
+                    console.log(flkty);
+                });
+            }
+        }
+    }
+</script>
+{% endblock %}
+
+
+{% block content %}
+<section>
+    <main class="h-1/2 text-white flex items-center justify-center" x-data="carouselFilter()">
+        <div class="container grid grid-cols-1">
+            <div class="flex justify-center">
+                <!-- <a class="px-2 text-lg uppercase font-bold tracking-widest hover:text-white"
+                    :class="{ 'text-gray-800': active != 0 }" href="#" @click.prevent="changeActive(0)">Fruit</a>
+                <a class="px-2 text-lg uppercase font-bold tracking-widest hover:text-white"
+                    :class="{ 'text-gray-700': active != 1 }" href="#" @click.prevent="changeActive(1)">People</a> -->
+            </div>
+
+            <div class="row-start-2 col-start-1" x-show="active == 0"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-90"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-90">
+                <div class="grid grid-cols-1 grid-rows-1" x-data="carousel()" x-init="init()">
+                    <div
+                        class="col-start-1 row-start-1 relative z-20 flex items-center justify-center pointer-events-none">
+
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 0"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12"></h1>
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 1"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12"></h1>
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 2"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12"></h1>
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 3"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12"></h1>
+                    </div>
+
+
+                    <div class="carousel col-start-1 row-start-1" x-ref="carousel">
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1621277224630-81d9af65e40c?ixlib=rb-1.2.1&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?ixlib=rb-1.2.1&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1480951921287-2ecdd81efbc2?ixlib=rb-1.2.1&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1602943554726-d8bebe914982?ixlib=rb-1.2.1&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row-start-2 col-start-1" x-show="active == 1"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-90"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-90">
+                <div class="grid grid-cols-1 grid-rows-1" x-data="carousel()" x-init="init()">
+                    <div
+                        class="col-start-1 row-start-1 relative z-20 flex items-center justify-center pointer-events-none">
+
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 0"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12">Beth</h1>
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 1"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12">Lee</h1>
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 2"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12">Jade</h1>
+                        <h1 class="absolute text-5xl uppercase font-black tracking-widest" x-show="active == 3"
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform translate-y-12"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-out duration-300"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-12">Drew</h1>
+                    </div>
+
+
+                    <div class="carousel col-start-1 row-start-1" x-ref="carousel">
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1462804993656-fac4ff489837?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                        <div class="w-3/5 px-2">
+                            <img src="https://images.unsplash.com/photo-1480455624313-e29b44bbfde1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=770&q=80"
+                                loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</section>
+<!-- Yacht Cards -->
+<section>
+    <div class="bg-white">
+        <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900">Book now</h2>
+            {% if yachts %}
+            <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                {% for yacht in yachts %}
+                <div class="group relative">
+                    <div
+                        class="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+                        <img src="/media/{{ yacht.image }}"
+                            alt="{{ yacht.name }}"
+                            class="w-full h-full object-center object-cover lg:w-full lg:h-full">
+                    </div>
+                    <div class="mt-4 flex justify-between">
+                        <div>
+                            <h3 class="text-sm text-gray-700">
+                                <a href="{% url 'main_yacht_detail' yacht.id %}">
+                                    <span aria-hidden="true" class="absolute inset-0"></span>
+                                    {{ yacht.name }}
+                                </a>
+                            </h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ yacht.yacht_type.name }}</p>
+                        </div>
+                        <p class="text-sm font-medium text-gray-900">&#x20B9;{{ yacht.rate }}<span class="font-normal">/day</span></p>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- More products... -->
+            </div>
+            {% else %}
+            <p>No yachts.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

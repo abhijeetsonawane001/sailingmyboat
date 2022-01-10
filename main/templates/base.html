@@ -21,7 +21,22 @@
             font-family: 'Inter', sans-serif;
         }
     </style>
+    {% block extra_css %}
+    {% endblock %}
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            height: {
+              '120': '42rem',
+            }
+          }
+        }
+      }
+    </script>
+    {% block extra_js %}
+    {% endblock %}
   </head>
   <body>
     {% include 'nav.html' %} 

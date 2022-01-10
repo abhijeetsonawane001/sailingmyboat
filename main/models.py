@@ -121,8 +121,8 @@ class Event(models.Model):
 class EventBooking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
 
@@ -150,8 +150,8 @@ class Training(models.Model):
 class TrainingBooking(models.Model):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
 

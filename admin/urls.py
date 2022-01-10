@@ -32,10 +32,12 @@ urlpatterns = [
     path('event/add', views.event_add, name="admin_event_add"),
     path('event/edit/<pk>', views.event_edit, name="admin_event_edit"),
     path('event/delete/<pk>', views.event_delete, name="admin_event_delete"),
+    path('event/bookings', views.event_booking, name="admin_event_booking_list"),
 
     # Training
     path('training/', views.training_list, name="admin_training_list"),
     path('training/add', views.training_add, name="admin_training_add"),
     path('training/edit/<pk>', views.training_edit, name="admin_training_edit"),
     path('training/delete/<pk>', views.training_delete, name="admin_training_delete"),
+    path('training/bookings', views.training_booking, name="admin_training_booking_list"),
 ]
