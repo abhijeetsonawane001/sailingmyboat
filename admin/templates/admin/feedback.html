@@ -1,4 +1,6 @@
-{% extends 'admin/base.html' %} {% block action %}
+{% extends 'admin/base.html' %}
+
+{% block action %}
 <a
   href="{% url 'admin_yacht_add' %}"
   class="
@@ -19,30 +21,10 @@
 >
   Export to PDF
 </a>
-<a
-  href="{% url 'admin_training_add' %}"
-  class="
-    inline-flex
-    justify-center
-    py-2
-    px-4
-    border border-transparent
-    shadow-sm
-    text-sm
-    font-mediumIi
-    rounded-md
-    text-white
-    bg-indigo-800
-    hover:bg-indigo-700
-    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-  "
->
-  Add Training
-</a>
 {% endblock %} 
 {% block content %} 
-{% if trainings.count < 1 %}
-<p>No Training found.</p>
+{% if feedbacks.count < 1 %}
+<p>No Feedback found.</p>
 {% else %}
   <div>
     <div class="flex flex-col">
@@ -56,16 +38,16 @@
                     Name
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Type
+                    Email
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Days
+                    Mobile Number
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Description
+                    Comment
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    Datetime
                   </th>
                   <th scope="col" class="relative px-6 py-3">
                     <span class="sr-only">Edit</span>
@@ -73,31 +55,30 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                {% for training in trainings %}
+                {% for feedback in feedbacks %}
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {{ training.name }}
+                    {{ feedback.name }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ training.type }}
+                    {{ feedback.email }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ training.days }}
+                    {{ feedback.mobile_number }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ training.description|truncatewords:13 }}
+                    {{ feedback.comment }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {% if training.is_active %}
-                    Active
-                    {% else %}
-                    Inactive
-                    {% endif %}
+                    {{ feedback.created_at }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-6">
-                    <a href="{% url 'admin_training_edit' training.id %}" class="text-indigo-700 hover:text-indigo-900">Edit</a>
-                    <a href="{% url 'admin_training_delete' training.id %}" class="text-indigo-700 hover:text-indigo-900">Delete</a>
-                  </td>
+                  
+                  
+                  
+                  <!-- <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-6">
+                    <a href="" class="text-indigo-700 hover:text-indigo-900">Edit</a>
+                    <a href="" class="text-indigo-700 hover:text-indigo-900">Delete</a>
+                  </td> -->
                 </tr>
                 {% endfor %}
               </tbody>

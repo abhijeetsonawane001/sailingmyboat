@@ -7,8 +7,8 @@
             <div class="">
               <div class="ml-10 flex items-baseline space-x-4">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="{% url 'admin_dashboard' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Bookings</a>
+                <!-- <a href="" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a> -->
+                <a href="{% url 'admin_bookings' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Bookings</a>
                 <div class="relative" x-data="{ open: false }" @click.away = "open = false">
                   <div class="flex flex-row">
                     <a href="#" @mouseover="open = true" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Yachts <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -32,7 +32,6 @@
                     <!-- Active: "bg-gray-100", Not Active: "" -->
                     <a href="{% url 'admin_package_list' %}" class="hover:bg-gray-200 block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">All Packages</a>
     
-                    <a href="{% url 'admin_yacht_type_list' %}" class="hover:bg-gray-200 block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Yacht Types</a>
                   </div>
                 </div>
                 <div class="relative" x-data="{ open: false }" @click.away = "open = false">
@@ -63,7 +62,8 @@
                 </div>
   
                 <a href="{% url 'admin_employee_list' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Employees</a>
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Admins</a>
+                <a href="{% url 'admin_feedback' %}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Feedbacks</a>
+
               </div>
             </div>
           </div>

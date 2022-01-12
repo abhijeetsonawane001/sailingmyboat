@@ -20,4 +20,14 @@ urlpatterns = [
     path('trainings', views.trainings_list, name="main_training_list"),
     path('trainings/detail/<pk>', views.trainings_detail, name='main_training_detail'),
     path('trainings/register/<training_id>', views.training_booking, name="main_training_register"),
+
+    # Packages
+    path('packages', views.package_list, name="main_package_list"),
+    path('packages/detail/<pk>', views.package_detail, name="main_package_detail"),
+
+    # Booking
+    path('booking', views.booking, name="main_booking"),
+    path('booking/success', views.success, name="main_booking_success"),
+
+    path('feedback', views.feedback, name="main_feedback")
 ]

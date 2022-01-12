@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.template.defaultfilters import slugify
 from main.models import (
+    Booking,
     Employee,
     Event,
     EventBooking,
+    Feedback,
     Package,
     Training,
     TrainingBooking,
@@ -27,7 +29,8 @@ from .helper import superuser_only
 @login_required()
 @superuser_only
 def dashboard(request):
-    return render(request, "admin/base.html", {"title": "Dashboard"})
+    # render(request, "admin/base.html", {"title": "Dashboard"})
+    return redirect('admin_bookings')
 
 
 # YACHT TYPES
@@ -396,3 +399,15 @@ def training_booking(request):
     training_bookings = TrainingBooking.objects.all()
     context = {"title": "Training Registrations", "bookings": training_bookings}
     return render(request, "admin/trainings/bookings_list.html", context)
+
+
+# YACHT & PACKAGE BOOKING
+def booking(request):
+    bookings = Booking.objects.all()
+    context = {"title": "Bookings", "bookings": bookings}
+    return render(request, "admin/booking.html", context)
+
+
+def feedback(request):
+    feedbacks = Feedback.objects.all()
+    return render(request, 'admin/feedback.html', {'title': 'Feedback', 'feedbacks': feedbacks})

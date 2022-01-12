@@ -40,4 +40,10 @@ urlpatterns = [
     path('training/edit/<pk>', views.training_edit, name="admin_training_edit"),
     path('training/delete/<pk>', views.training_delete, name="admin_training_delete"),
     path('training/bookings', views.training_booking, name="admin_training_booking_list"),
+
+    # YACHT PACKAGE Booking
+    path('bookings/', views.booking, name="admin_bookings"),
+
+    # Feedback
+    path('feedbacks/', views.feedback, name="admin_feedback")
 ]

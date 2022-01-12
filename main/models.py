@@ -90,16 +90,6 @@ class Yacht(models.Model):
     def __str__(self):
         return f"Yacht - {self.name}"
 
-class YachtBooking(models.Model):
-    yacht = models.ForeignKey(Yacht, on_delete=models.CASCADE)
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    start_date = models.DateTimeField(auto_now_add=True)
-    end_date = models.DateTimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"Yacht - {self.name}"
 
 class Event(models.Model):
     name = models.CharField(max_length=80)
@@ -165,6 +155,7 @@ class Package(models.Model):
     slug = models.SlugField()
     price = models.IntegerField()
     days = models.IntegerField()
+    persons = models.IntegerField()
     description = models.TextField()
     image = models.ImageField(upload_to=get_image_filename, null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -177,17 +168,6 @@ class Package(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Package, self).save(*args, **kwargs)
-
-class PackageBooking(models.Model):
-    package = models.ForeignKey(Package, on_delete=models.CASCADE)
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"PackageBooking - {self.package.name} - {self.member.email}"
 
 
 class Employee(models.Model):
@@ -207,13 +187,39 @@ class Employee(models.Model):
         return f"Employee - {self.email}"
 
 class Feedback(models.Model):
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
-    email = models.CharField(max_length=80, unique=True)
-    mobile_number = models.CharField(max_length=20)
+    name = models.CharField(max_length=80)
+    email = models.CharField(max_length=80)
+    mobile_number = models.CharField(max_length=20, null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"Feedback - {self.email}"
+
+
+class Booking(models.Model):
+    persons = models.IntegerField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    amount = models.CharField(max_length=7)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    yacht = models.ForeignKey(Yacht, on_delete=models.CASCADE, null=True, blank=True)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        if self.yacht:
+            return f"Yacht Booking: {self.member.email} - {self.yacht.name}"
+        if self.package:
+            return f"Package Booking: {self.package.email} - {self.package.name}"
+
+
+class Payment(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    payment_id = models.CharField(max_length=255)
+    order_id = models.CharField(max_length=255)
+    status = models.CharField(max_length=80)
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -135,3 +135,7 @@ LOGIN_URL = "main_login"
 # MEDIA
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Razorpay
+RAZORPAY_ID = "rzp_test_PsKumfdfzNYZj6"
+RAZORPAY_SECRET = "QIMSZfb8X1JoSspXAvYGFIud"
