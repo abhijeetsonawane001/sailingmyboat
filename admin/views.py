@@ -402,12 +402,16 @@ def training_booking(request):
 
 
 # YACHT & PACKAGE BOOKING
+@login_required()
+@superuser_only
 def booking(request):
     bookings = Booking.objects.all()
     context = {"title": "Bookings", "bookings": bookings}
     return render(request, "admin/booking.html", context)
 
 
+@login_required()
+@superuser_only
 def feedback(request):
     feedbacks = Feedback.objects.all()
     return render(request, 'admin/feedback.html', {'title': 'Feedback', 'feedbacks': feedbacks})

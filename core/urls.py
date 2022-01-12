@@ -20,6 +20,8 @@ from django.conf import settings
 urlpatterns = [
     path("", include("main.urls")),
     path("admin/", include("admin.urls")),
+    path("pdfs/", include("pdfs.urls")),
+
 ]
 
 if settings.DEBUG:
