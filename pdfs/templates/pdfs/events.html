@@ -1,0 +1,42 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<style>
+  table, th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+  @page {
+    size: letter landscape;
+    margin: 8px;
+}
+</style>
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Events List</h1>
+    <table style="margin-top: 12px;">
+      <tr>
+        <th>Event Name</th>
+        <th>Type</th>
+        <th>Days</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created At</th>
+      </tr>
+      {% for event in events %}
+      <tr>
+        <td>{{ event.name }}</td>
+        <td>{{ event.type }}</td>
+        <td>{{ event.days }}</td>
+        <td>{{ event.description }}</td>
+        <td>{% if event.is_active %}
+            Active
+            {% else %}
+            Inactive
+            {% endif %}</td>
+
+        <td>{{ event.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+{% endblock %}

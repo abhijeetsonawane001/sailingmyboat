@@ -1,0 +1,45 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<style>
+  table, th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+  @page {
+    size: letter landscape;
+    margin: 8px;
+}
+</style>
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Bookings List</h1>
+    <table style="margin-top: 12px;">
+      <tr>
+        <th>Member Name</th>
+        <th>Email</th>
+        <th>Booking</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Amount</th>
+        <th>Persons</th>
+        <th>Booking Date</th>
+      </tr>
+      {% for booking in bookings %}
+      <tr>
+        <td>{{ booking.member.first_name }} {{ booking.member.last_name }}</td>
+        <td style="width: 20%"> {{ booking.member.email }}</td>
+        <td>{% if booking.yacht %}
+          Yacht - {{ booking.yacht.name }}
+          {% else %}
+          Package - {{ booking.package.name }}
+          {% endif %}</td>
+        <td>{{ booking.start_date }}</td>
+        <td>{{ booking.end_date }}</td>
+        <td>Rs.{{ booking.amount }}</td>
+        <td>{{ booking.persons }}</td>
+        <td>{{ booking.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+{% endblock %}

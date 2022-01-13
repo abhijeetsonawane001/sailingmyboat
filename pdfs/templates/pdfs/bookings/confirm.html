@@ -1,0 +1,26 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Booking Receipt</h1>
+    <div style="margin-top: 12px;">
+      <p style="font-size: 16px;">Member Name: {{ booking.member.first_name }} {{ booking.member.last_name }}</p>
+      <p style="font-size: 16px;">Address: {{ booking.member.address }}</p>
+      <p style="font-size: 16px;">Email: {{ booking.member.email }}</p>
+    </div>
+    <div style="margin-top: 18px;">
+      <p style="font-size: 16px;font-weight: bold;">Booking for:</p>
+      <p style="font-size: 16px;">From Date: {{ booking.start_date }}</p>
+      <p style="font-size: 16px;">To Date: {{ booking.end_date }}</p>
+      {% if booking.yacht %}
+      <p style="font-size: 16px;">Yacht Name: {{ booking.yacht.name }}</p>
+      <p style="font-size: 16px;">Yacht Type: {{ booking.yacht.yacht_type.name }}</p>
+      {% endif %}
+      {% if booking.package %}
+      <p style="font-size: 16px;">Package Name: {{ booking.package.name }}</p>
+      <p style="font-size: 16px;">Package Type: {{ booking.package.type }}</p>
+      {% endif %}
+      <p style="font-size: 16px;margin-top: 2px;">Amount Paid: Rs.{{ booking.amount }}</p>
+    </div>
+  </section>
+{% endblock %}

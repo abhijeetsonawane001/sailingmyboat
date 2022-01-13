@@ -382,7 +382,7 @@ def success(request):
     payment.save()
 
     request.session.pop('current_booking')
-    return render(request, 'success.html')
+    return render(request, 'success.html', {"booking_id": booking.id})
 
 
 # Feedback

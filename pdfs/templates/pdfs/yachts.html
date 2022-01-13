@@ -1,0 +1,35 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<style>
+  table, th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+  @page {
+    size: letter landscape;
+    margin: 8px;
+}
+</style>
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Yachts List</h1>
+    <table style="margin-top: 12px;">
+      <tr>
+        <th>Yacht Name</th>
+        <th>Yacht Type</th>
+        <th>Rate</th>
+        <th>Capacity</th>
+        <th>Created At</th>
+      </tr>
+      {% for yacht in yachts %}
+      <tr>
+        <td>{{ yacht.name }}</td>
+        <td>{{ yacht.yacht_type.name }}</td>
+        <td>Rs.{{ yacht.rate }}</td>
+        <td>{{ yacht.capacity }}</td>
+        <td>{{ yacht.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<style>
+  table, th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+  @page {
+    size: letter landscape;
+    margin: 8px;
+}
+</style>
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Training List</h1>
+    <table style="margin-top: 12px;">
+      <tr>
+        <th>Training Name</th>
+        <th>Type</th>
+        <th>Days</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created At</th>
+      </tr>
+      {% for training in trainings %}
+      <tr>
+        <td>{{ training.name }}</td>
+        <td>{{ training.type }}</td>
+        <td>{{ training.days }}</td>
+        <td>{{ training.description }}</td>
+        <td>{% if training.is_active %}
+            Active
+            {% else %}
+            Inactive
+            {% endif %}</td>
+
+        <td>{{ training.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+{% endblock %}

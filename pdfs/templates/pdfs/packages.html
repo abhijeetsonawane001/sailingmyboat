@@ -1,0 +1,46 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<style>
+  table, th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+  @page {
+    size: letter landscape;
+    margin: 8px;
+}
+</style>
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Packages List</h1>
+    <table style="margin-top: 12px;">
+      <tr>
+        <th>Package Name</th>
+        <th>Type</th>
+        <th>Price</th>
+        <th>Days</th>
+        <th>For Persons</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created At</th>
+      </tr>
+      {% for package in packages %}
+      <tr>
+        <td>{{ package.name }}</td>
+        <td>{{ package.type }}</td>
+        <td>Rs.{{ package.price }}</td>
+        <td>{{ package.days }}</td>
+        <td>{{ package.persons }}</td>
+        <td>{{ package.description }}</td>
+        <td>{% if package.is_active %}
+            Active
+            {% else %}
+            Inactive
+            {% endif %}</td>
+
+        <td>{{ package.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+{% endblock %}

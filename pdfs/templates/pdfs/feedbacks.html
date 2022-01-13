@@ -1,0 +1,36 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<style>
+  table, th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+  @page {
+    size: letter landscape;
+    margin: 8px;
+}
+</style>
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Feedbacks List</h1>
+    <table style="margin-top: 12px;">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile Number</th>
+        <th>Comment</th>
+        <th>Created At</th>
+      </tr>
+      {% for feedback in feedbacks %}
+      <tr>
+        <td>{{ feedback.name }}</td>
+        <td>{{ feedback.email }}</td>
+        <td>{{ feedback.mobile_number }}</td>
+        <td>{{ feedback.comment }}</td>
+
+        <td>{{ feedback.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+{% endblock %}

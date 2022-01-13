@@ -1,0 +1,38 @@
+{% extends 'pdfs/base.html' %}
+
+{% block content %}
+<style>
+  table, th, td {
+    border: 1px solid black;
+    padding: 2px;
+  }
+  @page {
+    size: letter landscape;
+    margin: 8px;
+}
+</style>
+<section style="margin-top: 18px;">
+    <h1 style="font-size: 18px; font-weight: medium;">Training Registration List</h1>
+    <table style="margin-top: 12px;">
+      <tr>
+        <th>Member Name</th>
+        <th>Email</th>
+        <th>Training name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Registration date</th>
+      </tr>
+      {% for training_booking in training_bookings %}
+      <tr>
+        <td>{{ training_booking.member.first_name }} {{ training_booking.member.last_name }}</td>
+        <td>{{ training_booking.member.email }}</td>
+        <td>{{ training_booking.training.name }}</td>
+        <td>{{ training_booking.start_date }}</td>
+        <td>{{ training_booking.end_date }}</td>
+
+        <td>{{ training_booking.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </section>
+{% endblock %}
